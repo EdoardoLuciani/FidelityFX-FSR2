@@ -27,6 +27,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <codecvt>
+#include <locale>
 
 // prototypes for functions in the interface
 FfxErrorCode GetDeviceCapabilitiesVK(FfxFsr2Interface* backendInterface, FfxDeviceCapabilities* deviceCapabilities, FfxDevice device);
@@ -591,7 +592,7 @@ FfxResource ffxGetTextureResourceVK(FfxFsr2Context* context, VkImage imgVk, VkIm
 
 #ifdef _DEBUG
     if (name) {
-        wcscpy_s(resource.name, name);
+        wcscpy(resource.name, name);
     }
 #endif
 
@@ -615,7 +616,7 @@ FfxResource ffxGetBufferResourceVK(FfxFsr2Context* context, VkBuffer bufVk, uint
 
 #ifdef _DEBUG
     if (name) {
-        wcscpy_s(resource.name, name);
+        wcscpy(resource.name, name);
     }
 #endif
 
@@ -1350,17 +1351,17 @@ FfxErrorCode CreatePipelineVK(FfxFsr2Interface* backendInterface, FfxFsr2Pass pa
     for (uint32_t srvIndex = 0; srvIndex < outPipeline->srvCount; ++srvIndex)
     {
         outPipeline->srvResourceBindings[srvIndex].slotIndex = shaderBlob.boundSampledImageBindings[srvIndex];
-        wcscpy_s(outPipeline->srvResourceBindings[srvIndex].name, converter.from_bytes(shaderBlob.boundSampledImageNames[srvIndex]).c_str());
+        wcscpy(outPipeline->srvResourceBindings[srvIndex].name, converter.from_bytes(shaderBlob.boundSampledImageNames[srvIndex]).c_str());
     }
     for (uint32_t uavIndex = 0; uavIndex < outPipeline->uavCount; ++uavIndex)
     {
         outPipeline->uavResourceBindings[uavIndex].slotIndex = shaderBlob.boundStorageImageBindings[uavIndex];
-        wcscpy_s(outPipeline->uavResourceBindings[uavIndex].name, converter.from_bytes(shaderBlob.boundStorageImageNames[uavIndex]).c_str());
+        wcscpy(outPipeline->uavResourceBindings[uavIndex].name, converter.from_bytes(shaderBlob.boundStorageImageNames[uavIndex]).c_str());
     }
     for (uint32_t cbIndex = 0; cbIndex < outPipeline->constCount; ++cbIndex)
     {
         outPipeline->cbResourceBindings[cbIndex].slotIndex = shaderBlob.boundUniformBufferBindings[cbIndex];
-        wcscpy_s(outPipeline->cbResourceBindings[cbIndex].name, converter.from_bytes(shaderBlob.boundUniformBufferNames[cbIndex]).c_str());
+        wcscpy(outPipeline->cbResourceBindings[cbIndex].name, converter.from_bytes(shaderBlob.boundUniformBufferNames[cbIndex]).c_str());
     }
 
     // create descriptor set layout
